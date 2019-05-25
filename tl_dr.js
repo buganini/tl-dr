@@ -6,7 +6,7 @@
         }
 
         currentHelper = document.createElement("div");
-        currentHelper.style = "background:#CCCCCC; padding:10px; position:fixed; z-index:1000000; left:50%; bottom:5%; transform:translateX(-50%)"
+        currentHelper.style = "text-align:center; background:#CCCCCC; padding:10px; position:fixed; z-index:1000000; left:50%; bottom:5%; transform:translateX(-50%)"
     
         var toolbar = document.createElement("div");
         toolbar.style = "text-align:right"
