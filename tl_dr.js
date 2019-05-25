@@ -37,7 +37,10 @@
         document.body.appendChild(currentHelper);
     };
 
-    var re = new RegExp('[a-z]+[a-z -]*[\u0300-\u036f]+(?:[a-z -]*[\u0300-\u036f]*)*', "gi");
+    var alphabets = "abeghijklmnopstu";
+    var diacritics = "\u0300\u0301\u0302\u0304\u030B\u030C\u030D";
+    var extras = ",.?!: -";
+    var re = new RegExp('['+alphabets+']+['+alphabets+extras+']*['+diacritics+']+(?:['+alphabets+extras+']*['+diacritics+']*)*', "gi");
     var iter = document.evaluate("//body//text()[string-length(normalize-space(.))>2]", document, null, XPathResult.ANY_TYPE, null);
     var texts = [];
     var t;
