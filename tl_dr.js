@@ -45,6 +45,9 @@
         if(["SCRIPT","STYLE"].indexOf(t.parentNode.nodeName)!=-1){
             continue;
         }
+        if(t.parentNode.className=="__tl_dr__"){
+            continue;
+        }
         texts.push(t);
     }
     for(var text in texts){
@@ -66,6 +69,7 @@
                 var n;
                 if(i&1){
                     var n = document.createElement("span");
+                    n.className="__tl_dr__";
                     n.style = "cursor:pointer";
                     n.onclick = showHelper;
                     n.textContent = tk;
