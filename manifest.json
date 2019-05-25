@@ -14,12 +14,15 @@
 	}],
 
 	"background": {
-        "scripts": ["background.js"]
+		"scripts": ["background.js"],
+		"persistent": true
 	},
 
 	"permissions": [
 		"tabs",
 		"webNavigation",
+		"webRequest",
+        "webRequestBlocking",
 		"http://*/*",
 		"https://*/*",
 		"file:///*/*"

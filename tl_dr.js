@@ -79,7 +79,7 @@
                 text.parentNode.insertBefore(n, text);
             }
             text.parentNode.removeChild(text);
-            console.log(text);
+            // console.log(text);
         }
     }
 })();
