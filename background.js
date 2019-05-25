@@ -8,7 +8,6 @@ function requestProcessor(details) {
             name !== "x-webkit-csp") {
             continue;
         }
-        console.log(header.value);
         header.value = header.value.replace("media-src ", "media-src https://xn--lhrz38b.xn--v0qr21b.xn--kpry57d ");
     }
     return {responseHeaders: headers};
