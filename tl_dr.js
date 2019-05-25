@@ -6,7 +6,7 @@
         }
 
         currentHelper = document.createElement("div");
-        currentHelper.style = "background:#CCCCCC; padding:5px; position:fixed; z-index:1000000; left:50%; bottom:5%; transform:translateX(-50%)"
+        currentHelper.style = "background:#CCCCCC; padding:10px; position:fixed; z-index:1000000; left:50%; bottom:5%; transform:translateX(-50%)"
     
         var toolbar = document.createElement("div");
         toolbar.style = "text-align:right"
@@ -30,7 +30,7 @@
         currentHelper.appendChild(audio);
 
         var attribution = document.createElement("div");
-        attribution.style="text-align:right"
+        attribution.style="text-align:right; font-size:10pt"
         attribution.innerHTML = '語音合成服務由<a href="https://xn--v0qr21b.xn--kpry57d/">意傳科技</a>提供';
         currentHelper.appendChild(attribution);
 
