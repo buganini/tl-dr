@@ -41,48 +41,59 @@
     var diacritics = "\u0300\u0301\u0302\u0304\u030B\u030C\u030D";
     var extras = ",.?!: -";
     var re = new RegExp('['+alphabets+']+['+alphabets+extras+']*['+diacritics+']+(?:['+alphabets+extras+']*['+diacritics+']*)*', "gi");
-    var iter = document.evaluate("//body//text()[string-length(normalize-space(.))>2]", document, null, XPathResult.ANY_TYPE, null);
-    var texts = [];
-    var t;
-    while(t=iter.iterateNext()){
-        if(["SCRIPT","STYLE"].indexOf(t.parentNode.nodeName)!=-1){
-            continue;
-        }
-        if(t.parentNode.className=="__tl_dr__"){
-            continue;
-        }
-        texts.push(t);
-    }
-    for(var text in texts){
-        text = texts[text];
-        var t = text.textContent.normalize('NFD');
-        var matches = t.match(re);
-        if(matches){
-            var tokens = [];
-            for(var m in matches){
-                m = matches[m];
-                var i = t.indexOf(m);
-                tokens.push(t.substring(0,i));
-                tokens.push(m);
-                t = t.substring(i+m.length);
+    var tldr = function(){
+        var iter = document.evaluate("//body//text()[string-length(normalize-space(.))>2]", document, null, XPathResult.ANY_TYPE, null);
+        var texts = [];
+        var t;
+        while(t=iter.iterateNext()){
+            if(["SCRIPT","STYLE"].indexOf(t.parentNode.nodeName)!=-1){
+                continue;
             }
-            tokens.push(t);
-            for(var i in tokens){
-                var tk = tokens[i];
-                var n;
-                if(i&1){
-                    var n = document.createElement("span");
-                    n.className="__tl_dr__";
-                    n.style = "cursor:pointer";
-                    n.onclick = showHelper;
-                    n.textContent = tk;
-                }else{
-                    n = document.createTextNode(tk);
+            if(t.parentNode.className=="__tl_dr__"){
+                continue;
+            }
+            texts.push(t);
+        }
+        for(var text in texts){
+            text = texts[text];
+            var t = text.textContent.normalize('NFD');
+            var matches = t.match(re);
+            if(matches){
+                var tokens = [];
+                for(var m in matches){
+                    m = matches[m];
+                    var i = t.indexOf(m);
+                    tokens.push(t.substring(0,i));
+                    tokens.push(m);
+                    t = t.substring(i+m.length);
                 }
-                text.parentNode.insertBefore(n, text);
+                tokens.push(t);
+                for(var i in tokens){
+                    var tk = tokens[i];
+                    var n;
+                    if(i&1){
+                        var n = document.createElement("span");
+                        n.className="__tl_dr__";
+                        n.style = "cursor:pointer";
+                        n.onclick = showHelper;
+                        n.textContent = tk;
+                    }else{
+                        n = document.createTextNode(tk);
+                    }
+                    text.parentNode.insertBefore(n, text);
+                }
+                text.parentNode.removeChild(text);
+                // console.log(text);
             }
-            text.parentNode.removeChild(text);
-            // console.log(text);
         }
-    }
+    };
+    MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
+    var observer = new MutationObserver(function(mutations, observer) {
+        tldr();
+    });
+    observer.observe(document, {
+        subtree: true,
+        childList: true
+    });
+    tldr();
 })();
