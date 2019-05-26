@@ -46,7 +46,7 @@
         var texts = [];
         var t;
         while(t=iter.iterateNext()){
-            if(["SCRIPT","STYLE"].indexOf(t.parentNode.nodeName)!=-1){
+            if(["SCRIPT","STYLE","TEXTAREA"].indexOf(t.parentNode.nodeName)!=-1){
                 continue;
             }
             if(t.parentNode.className=="__tl_dr__"){
