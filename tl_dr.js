@@ -74,7 +74,7 @@
             vs.push(v.substring(0,1)+s+v.substring(1));
             for(var vv in prenuclear_glides){
                 vv = prenuclear_glides[vv];
-                if(v[0]=="o" && vv[0]=="o"){
+                if(v[0]==vv[0]){
                     continue;
                 }
                 vs.push(vv+v.substring(0,1)+s+v.substring(1));
