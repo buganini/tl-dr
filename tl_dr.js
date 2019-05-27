@@ -64,7 +64,7 @@
     var diacritic_digits = ["","1","2","3","4","5","6","7","8","9"];
     var extras = [",","\\.","\\?","!",":","\\s","-","\\b"];
 
-    var vowels_with_diacritics = [];
+    var vowels_with_diacritic_symbols = [];
     for(var s in diacritic_symbols){
         s = diacritic_symbols[s];
         var vs = [];
@@ -90,32 +90,31 @@
             v = vs[v];
             for(var c in syllable_coda){
                 c = syllable_coda[c];
-                vowels_with_diacritics.push(v+c);
+                vowels_with_diacritic_symbols.push(v+c);
             }
         }
     }
-    for(var s in diacritic_digits){
-        s = diacritic_digits[s];
-        var vs = vowels.concat(vocalic_consonants);
-        for(var v in vs){
-            v = vs[v];
-            for(var c in syllable_coda){
-                c = syllable_coda[c];
-                vowels_with_diacritics.push(v+c+s);
-                for(var vv in vowels){
-                    vv = vowels[vv];
-                    vowels_with_diacritics.push(vv+v+c+s);
-                }
+    var vowels_with_diacritic_digits = [];
+    var vs = vowels.concat(vocalic_consonants);
+    for(var v in vs){
+        v = vs[v];
+        for(var c in syllable_coda){
+            c = syllable_coda[c];
+            vowels_with_diacritic_digits.push(v+c);
+            for(var vv in vowels){
+                vv = vowels[vv];
+                vowels_with_diacritic_digits.push(vv+v+c);
             }
         }
     }
     consonants = group(consonants);
     vowels = group(vowels);
-    vowels_with_diacritics = group(vowels_with_diacritics);
+    vowels_with_diacritics = group([group(vowels_with_diacritic_symbols),group(vowels_with_diacritic_digits)+group(diacritic_digits)]);
     syllable_coda = group(syllable_coda);
     extras = group(extras);
 
-    var regex = "(?=[^a-z0-9]||\\b|^)(?:"+(consonants)+"?"+(vowels_with_diacritics)+(extras)+"+)+(?:"+(consonants)+"?"+(vowels_with_diacritics)+")(?=[^a-z0-9\u0300\u0301\u0302\u0304\u030B\u030C\u030D]|\\b|$)";
+    var regex = "(?=[^a-z0-9]|\\b|^)(?:"+(consonants)+"?"+(vowels_with_diacritics)+(extras)+"+)+(?:"+(consonants)+"?"+(vowels_with_diacritics)+")(?=[^a-z0-9\u0300\u0301\u0302\u0304\u030B\u030C\u030D]|\\b|$)";
+    // console.log(regex.length);
     var re = new RegExp(regex, "gi");
     var tldr = function(){
         var iter = document.evaluate("//body//text()[string-length(normalize-space(.))>2]", document, null, XPathResult.ANY_TYPE, null);
