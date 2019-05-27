@@ -62,7 +62,7 @@
     var vocalic_consonants = ["m","ng"];
     var syllable_coda = ["","i","u","m","n","nn","ng","p","t","k","h"];
     var extra_vowels = ["ee","eng","eeh","ek","ionn","ionnh","er","ere^","eru^","erh","ereh","ir","irinn","irh","irm","irn","irng","irp","irt","irk"];
-    var diacritic_symbols = ["","\u0300","\u0301","\u0302","\u0304","\u030B","\u030C","\u030D"];
+    var diacritic_symbols = ["\u0300","\u0301","\u0302","\u0304","\u030B","\u030C","\u030D"];
     var diacritic_digits = ["","1","2","3","4","5","6","7","8","9"];
     var extras = [",","\\.","\\?","!",":","\\s","-"];
 
