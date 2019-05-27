@@ -57,12 +57,13 @@
         return "(?:"+arr.join("|")+")";
     };
     var consonants = ["b","c","d","f","g","h","j","k","kh","l","m","n","ng","p","q","r","ph","s","t","th","ts","tsh","v","w","x","y","z","ch","chh"];
+    var prenuclear_glides = ["i","o","u"];
     var vowels = ["a","e","i","o","oo","u"];
     var vocalic_consonants = ["m","ng"];
     var syllable_coda = ["","i","u","m","n","nn","ng","p","t","k","h"];
     var diacritic_symbols = ["","\u0300","\u0301","\u0302","\u0304","\u030B","\u030C","\u030D"];
     var diacritic_digits = ["","1","2","3","4","5","6","7","8","9"];
-    var extras = [",","\\.","\\?","!",":","\\s","-","\\b"];
+    var extras = [",","\\.","\\?","!",":","\\s","-"];
 
     var vowels_with_diacritic_symbols = [];
     for(var s in diacritic_symbols){
@@ -71,8 +72,8 @@
         for(var v in vowels){
             v = vowels[v];
             vs.push(v.substring(0,1)+s+v.substring(1));
-            for(var vv in vowels){
-                vv = vowels[vv];
+            for(var vv in prenuclear_glides){
+                vv = prenuclear_glides[vv];
                 vs.push(vv+v.substring(0,1)+s+v.substring(1));
                 vs.push(vv.substring(0,1)+s+vv.substring(1)+v);
             }
@@ -80,8 +81,8 @@
         for(var v in vocalic_consonants){
             v = vocalic_consonants[v];
             vs.push(v.substring(0,1)+s+v.substring(1));
-            for(var vv in vowels){
-                vv = vowels[vv];
+            for(var vv in prenuclear_glides){
+                vv = prenuclear_glides[vv];
                 vs.push(vv+v.substring(0,1)+s+v.substring(1));
                 vs.push(vv.substring(0,1)+s+vv.substring(1)+v);
             }
@@ -101,8 +102,8 @@
         for(var c in syllable_coda){
             c = syllable_coda[c];
             vowels_with_diacritic_digits.push(v+c);
-            for(var vv in vowels){
-                vv = vowels[vv];
+            for(var vv in prenuclear_glides){
+                vv = prenuclear_glides[vv];
                 vowels_with_diacritic_digits.push(vv+v+c);
             }
         }
@@ -114,6 +115,7 @@
     extras = group(extras);
 
     var regex = "(?=[^a-z0-9]|\\b|^)(?:"+(consonants)+"?"+(vowels_with_diacritics)+(extras)+"+)+(?:"+(consonants)+"?"+(vowels_with_diacritics)+")(?=[^a-z0-9\u0300\u0301\u0302\u0304\u030B\u030C\u030D]|\\b|$)";
+    // console.log(regex);
     // console.log(regex.length);
     var re = new RegExp(regex, "gi");
     var tldr = function(){
