@@ -122,8 +122,9 @@
     vowels = group(vowels);
     syllable_coda = group(syllable_coda);
     extras = group(extras);
+    var syllable = (consonants)+"?"+(vowels_with_diacritics);
 
-    var regex = "(?=[^a-z0-9]|\\b|^)(?:"+(consonants)+"?"+(vowels_with_diacritics)+(extras)+"+)+(?:"+(consonants)+"?"+(vowels_with_diacritics)+")(?=[^a-z0-9\u0300\u0301\u0302\u0304\u030B\u030C\u030D]|\\b|$)";
+    var regex = "(?<=^|[^a-z0-9\u0300-\u036F])(?:"+(syllable)+(extras)+"+)+(?:"+(syllable)+")(?=[^a-z0-9\u0300\u0301\u0302\u0304\u030B\u030C\u030D]|\\b|$)";
     // console.log(regex);
     // console.log(regex.length);
     var re = new RegExp(regex, "gi");
@@ -145,7 +146,6 @@
             var t = text.textContent.normalize('NFD');
             var matches = t.match(re);
             if(matches){
-                // console.log("text:"+t);
                 var tokens = [];
                 for(var m in matches){
                     m = matches[m];
