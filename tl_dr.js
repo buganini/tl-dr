@@ -74,6 +74,9 @@
             vs.push(v.substring(0,1)+s+v.substring(1));
             for(var vv in prenuclear_glides){
                 vv = prenuclear_glides[vv];
+                if(v[0]=="o" && vv[0]=="o"){
+                    continue;
+                }
                 vs.push(vv+v.substring(0,1)+s+v.substring(1));
                 vs.push(vv.substring(0,1)+s+vv.substring(1)+v);
             }
@@ -83,6 +86,9 @@
             vs.push(v.substring(0,1)+s+v.substring(1));
             for(var vv in prenuclear_glides){
                 vv = prenuclear_glides[vv];
+                if(v[0]=="o" && vv[0]=="o"){
+                    continue;
+                }
                 vs.push(vv+v.substring(0,1)+s+v.substring(1));
                 vs.push(vv.substring(0,1)+s+vv.substring(1)+v);
             }
@@ -104,13 +110,16 @@
             vowels_with_diacritic_digits.push(v+c);
             for(var vv in prenuclear_glides){
                 vv = prenuclear_glides[vv];
+                if(v[0]=="o" && vv[0]=="o"){
+                    continue;
+                }
                 vowels_with_diacritic_digits.push(vv+v+c);
             }
         }
     }
+    var vowels_with_diacritics = group([group(vowels_with_diacritic_symbols),group(vowels_with_diacritic_digits)+group(diacritic_digits)]);
     consonants = group(consonants);
     vowels = group(vowels);
-    vowels_with_diacritics = group([group(vowels_with_diacritic_symbols),group(vowels_with_diacritic_digits)+group(diacritic_digits)]);
     syllable_coda = group(syllable_coda);
     extras = group(extras);
 
