@@ -1,4 +1,5 @@
 (function(){
+    var class_name = "__tl_dr__";
     var currentHelper = null;
     var showHelper = function(){
         if(currentHelper != null){
@@ -19,6 +20,7 @@
         toolbar.appendChild(close);
 
         var text = document.createElement("div");
+        text.className = class_name;
         text.textContent = this.textContent;
         text.style="text-align:center;"
         currentHelper.appendChild(text);
@@ -49,7 +51,7 @@
             if(["SCRIPT","STYLE","TEXTAREA"].indexOf(t.parentNode.nodeName)!=-1){
                 continue;
             }
-            if(t.parentNode.className=="__tl_dr__"){
+            if(t.parentNode.className==class_name){
                 continue;
             }
             texts.push(t);
@@ -73,7 +75,7 @@
                     var n;
                     if(i&1){
                         var n = document.createElement("span");
-                        n.className="__tl_dr__";
+                        n.className=class_name;
                         n.style = "cursor:pointer";
                         n.onclick = showHelper;
                         n.textContent = tk;
