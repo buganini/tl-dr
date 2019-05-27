@@ -89,6 +89,9 @@
             v = vs[v];
             for(var c in syllable_coda){
                 c = syllable_coda[c];
+                if(c.length>0 && c[0]==v[0]){
+                    continue;
+                }
                 vowels_with_diacritic_symbols.push(v+c);
             }
         }
@@ -99,10 +102,13 @@
         v = vs[v];
         for(var c in syllable_coda){
             c = syllable_coda[c];
+            if(c.length>0 && c[0]==v[0]){
+                continue;
+            }
             vowels_with_diacritic_digits.push(v+c);
             for(var vv in prenuclear_glides){
                 vv = prenuclear_glides[vv];
-                if(v[0]=="o" && vv[0]=="o"){
+                if(v[0]==vv[0]){
                     continue;
                 }
                 vowels_with_diacritic_digits.push(vv+v+c);
