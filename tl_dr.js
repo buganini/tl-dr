@@ -39,10 +39,84 @@
         document.body.appendChild(currentHelper);
     };
 
-    var alphabets = "abeghijklmnopstu";
-    var diacritics = "\u0300\u0301\u0302\u0304\u030B\u030C\u030D";
-    var extras = ",.?!: -";
-    var re = new RegExp('['+alphabets+']+['+alphabets+extras+']*['+diacritics+']+(?:['+alphabets+extras+']*['+diacritics+']*)*', "gi");
+    var group = function(arr){
+        arr = Array.from(new Set(arr));
+        arr.sort(function(a,b){
+            var c = b.length - a.length;
+            if (c != 0){
+                return c;
+            }
+            if (a < b) {
+                return -1;
+            }
+            if (a > b) {
+                return 1;
+            }
+            return 0;
+        });
+        return "(?:"+arr.join("|")+")";
+    };
+    var consonants = ["b","c","d","f","g","h","j","k","kh","l","m","n","ng","p","q","r","ph","s","t","th","ts","tsh","v","w","x","y","z","ch","chh"];
+    var vowels = ["a","e","i","o","oo","u"];
+    var vocalic_consonants = ["m","ng"];
+    var syllable_coda = ["","i","u","m","n","nn","ng","p","t","k","h"];
+    var diacritic_symbols = ["","\u0300","\u0301","\u0302","\u0304","\u030B","\u030C","\u030D"];
+    var diacritic_digits = ["","1","2","3","4","5","6","7","8","9"];
+    var extras = [",","\\.","\\?","!",":","\\s","-","\\b"];
+
+    var vowels_with_diacritics = [];
+    for(var s in diacritic_symbols){
+        s = diacritic_symbols[s];
+        var vs = [];
+        for(var v in vowels){
+            v = vowels[v];
+            vs.push(v.substring(0,1)+s+v.substring(1));
+            for(var vv in vowels){
+                vv = vowels[vv];
+                vs.push(vv+v.substring(0,1)+s+v.substring(1));
+                vs.push(vv.substring(0,1)+s+vv.substring(1)+v);
+            }
+        }
+        for(var v in vocalic_consonants){
+            v = vocalic_consonants[v];
+            vs.push(v.substring(0,1)+s+v.substring(1));
+            for(var vv in vowels){
+                vv = vowels[vv];
+                vs.push(vv+v.substring(0,1)+s+v.substring(1));
+                vs.push(vv.substring(0,1)+s+vv.substring(1)+v);
+            }
+        }
+        for(var v in vs){
+            v = vs[v];
+            for(var c in syllable_coda){
+                c = syllable_coda[c];
+                vowels_with_diacritics.push(v+c);
+            }
+        }
+    }
+    for(var s in diacritic_digits){
+        s = diacritic_digits[s];
+        var vs = vowels.concat(vocalic_consonants);
+        for(var v in vs){
+            v = vs[v];
+            for(var c in syllable_coda){
+                c = syllable_coda[c];
+                vowels_with_diacritics.push(v+c+s);
+                for(var vv in vowels){
+                    vv = vowels[vv];
+                    vowels_with_diacritics.push(vv+v+c+s);
+                }
+            }
+        }
+    }
+    consonants = group(consonants);
+    vowels = group(vowels);
+    vowels_with_diacritics = group(vowels_with_diacritics);
+    syllable_coda = group(syllable_coda);
+    extras = group(extras);
+
+    var regex = "(?=[^a-z0-9]||\\b|^)(?:"+(consonants)+"?"+(vowels_with_diacritics)+(extras)+"+)+(?:"+(consonants)+"?"+(vowels_with_diacritics)+")(?=[^a-z0-9\u0300\u0301\u0302\u0304\u030B\u030C\u030D]|\\b|$)";
+    var re = new RegExp(regex, "gi");
     var tldr = function(){
         var iter = document.evaluate("//body//text()[string-length(normalize-space(.))>2]", document, null, XPathResult.ANY_TYPE, null);
         var texts = [];
@@ -61,6 +135,7 @@
             var t = text.textContent.normalize('NFD');
             var matches = t.match(re);
             if(matches){
+                // console.log("text:"+t);
                 var tokens = [];
                 for(var m in matches){
                     m = matches[m];
@@ -79,13 +154,13 @@
                         n.style = "cursor:pointer";
                         n.onclick = showHelper;
                         n.textContent = tk;
+                        // console.log("TL:"+tk);
                     }else{
                         n = document.createTextNode(tk);
                     }
                     text.parentNode.insertBefore(n, text);
                 }
                 text.parentNode.removeChild(text);
-                // console.log(text);
             }
         }
     };
