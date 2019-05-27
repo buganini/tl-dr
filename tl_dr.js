@@ -84,14 +84,6 @@
         for(var v in vocalic_consonants){
             v = vocalic_consonants[v];
             vs.push(v.substring(0,1)+s+v.substring(1));
-            for(var vv in prenuclear_glides){
-                vv = prenuclear_glides[vv];
-                if(v[0]=="o" && vv[0]=="o"){
-                    continue;
-                }
-                vs.push(vv+v.substring(0,1)+s+v.substring(1));
-                vs.push(vv.substring(0,1)+s+vv.substring(1)+v);
-            }
         }
         for(var v in vs){
             v = vs[v];
