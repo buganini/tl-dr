@@ -111,24 +111,34 @@
     var prefix = "(?<=^|[^a-z0-9\u0300-\u036F])";
     var suffix = "(?=[^a-z0-9\u0300\u0301\u0302\u0304\u030B\u030C\u030D]|\\b|$)";
 
+    var timeout;
     var tldr = function(){
-        chrome.runtime.sendMessage({
-            action: "GET_CONFIG"
+        if(timeout){
+            clearTimeout(timeout);
+        }
+        timeout = setTimeout(_tldr, 100);
+    };
+
+    var _tldr = function(){
+        chrome.storage.local.get({
+            syllable: '2plus',
         }, function(items) {
             switch(items.syllable){
                 case "1plus":
-                    _tldr(`${prefix}${syllable}(?:${extras}+${syllable})*${suffix}`);
+                    __tldr(`${prefix}${syllable}(?:${extras}+${syllable})*${suffix}`);
                     break;
                 case "2plus":
-                    _tldr(`${prefix}(?:${syllable}${extras}+)+(?:${syllable})${suffix}`);
+                    __tldr(`${prefix}(?:${syllable}${extras}+)+(?:${syllable})${suffix}`);
                     break;
             }
         });
     };
-    var _tldr = function(regex){
-        var re = new RegExp(regex, "gi");
-        // console.log(re);
-        // console.log(re.length);
+
+    var __tldr = function(regex){
+        // console.log(regex.replace(/[\u007F-\uFFFF]/g, function(chr) {
+        //     return "\\u" + ("0000" + chr.charCodeAt(0).toString(16)).substr(-4)
+        // }));
+        console.log(regex.length);
         var iter = document.evaluate("//body//text()[string-length(normalize-space(.))>2]", document, null, XPathResult.ANY_TYPE, null);
         var texts = [];
         var t;
@@ -141,6 +151,8 @@
             }
             texts.push(t);
         }
+        iter = null;
+        var re = new RegExp(regex, "gi");
         for(var text in texts){
             text = texts[text];
             var t = text.textContent.normalize('NFD');
