@@ -136,10 +136,14 @@
     extras = group(extras);
     var syllable = (consonants)+"?"+(vowels_with_diacritics);
 
-    var regex = "(?<=^|[^a-z0-9\u0300-\u036F])(?:"+(syllable)+(extras)+"+)+(?:"+(syllable)+")(?=[^a-z0-9\u0300\u0301\u0302\u0304\u030B\u030C\u030D]|\\b|$)";
+    var prefix = "(?<=^|[^a-z0-9\u0300-\u036F])";
+    var suffix = "(?=[^a-z0-9\u0300\u0301\u0302\u0304\u030B\u030C\u030D]|\\b|$)";
+
+    var regex_2plus_syllables = `${prefix}(?:${syllable}${extras}+)+(?:${syllable})${suffix}`;
+    var regex_1plus_syllables = `${prefix}${syllable}(?:${extras}+${syllable})*${suffix}`;
     // console.log(regex);
     // console.log(regex.length);
-    var re = new RegExp(regex, "gi");
+    var re = new RegExp(regex_2plus_syllables, "gi");
     var tldr = function(){
         var iter = document.evaluate("//body//text()[string-length(normalize-space(.))>2]", document, null, XPathResult.ANY_TYPE, null);
         var texts = [];
