@@ -67,11 +67,12 @@
                 tks.push(tk);
             }
         }
-        bytes = "["+bytes.join("")+"]";
         if(tks.length==0){
-            return bytes;
+            return "["+bytes.join("")+"]";
         }else{
-            tks.push(bytes);
+            if(bytes.length>0){
+                tks.push("["+bytes.join("")+"]");
+            }
             return "(?:"+tks.join("|")+")";
         }
     };
