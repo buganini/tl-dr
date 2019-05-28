@@ -163,7 +163,16 @@
         var texts = [];
         var t;
         while(t=iter.iterateNext()){
-            if(["SCRIPT","STYLE","TEXTAREA"].indexOf(t.parentNode.nodeName)!=-1){
+            if(["SCRIPT","STYLE","TEXTAREA","NOSCRIPT"].indexOf(t.parentNode.nodeName)!=-1){
+                continue;
+            }
+            var contenteditable = false;
+            var p = t.parentNode;
+            while(p){
+                contenteditable = contenteditable || p.getAttribute("contenteditable")=="true";
+                p = p.parentNode;
+            }
+            if(contenteditable){
                 continue;
             }
             if(t.parentNode.className==class_name){
