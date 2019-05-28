@@ -77,11 +77,11 @@
         }
     };
     var consonants = ["b","c","d","f","g","h","j","k","kh","l","m","n","ng","p","q","r","ph","s","t","th","ts","tsh","v","w","x","y","z","ch","chh"];
-    var prenuclear_glides = ["i","o","u"];
-    var vowels = ["a","e","i","o","oo","u"];
+    var prenuclear_glides = ["i","o","u","\u0131"];
+    var vowels = ["a","e","i","o","oo","u","ai","\u0131"];
     var vocalic_consonants = ["m","ng"];
     var syllable_coda = ["i","u","m","n","nn","ng","p","t","k","h"];
-    var extra_vowels = ["ee","eng","eeh","ek","ionn","ionnh","er","ere^","eru^","erh","ereh","ir","irinn","irh","irm","irn","irng","irp","irt","irk"];
+    var extra_vowels = ["ee","eng","eeh","ek","[i\u0131]onn","[i\u0131]onnh","er","ere^","eru^","erh","ereh","[i\u0131]r","[i\u0131]rinn","[i\u0131]rh","[i\u0131]rm","[i\u0131]rn","[i\u0131]rng","[i\u0131]rp","[i\u0131]rt","[i\u0131]rk"];
     var diacritic_symbols = "[\u0300\u0301\u0302\u0304\u030B\u030C\u030D]";
     var diacritic_digits = "[1-9]";
     var extras = "[,.?!: s-]";
@@ -128,8 +128,8 @@
     syllable_coda = group(syllable_coda);
     var syllable = (consonants)+"?"+(vowels_with_diacritics);
 
-    var prefix = "(?:^|[^a-z0-9\u0300-\u036F-])";
-    var suffix = "(?=[^a-z0-9\u0300-\u036F-]|$)";
+    var prefix = "(?:^|[^a-z0-9\u0300-\u036F\u0131-])";
+    var suffix = "(?=[^a-z0-9\u0300-\u036F\u0131-]|$)";
 
     var pattern;
 
