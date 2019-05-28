@@ -99,10 +99,10 @@
     for(var v in extra_vowels){
         v = extra_vowels[v];
         if(v.indexOf("^")!=-1){
-            vowels_with_diacritics.push(v);
+            vowels_with_diacritics.push(v.replace("^", diacritic_symbols));
             vowels_without_diacritics.push(v.replace("^",""));
         }else{
-            vowels_with_diacritics.push(v.substring(0,1)+"^"+v.substring(1));
+            vowels_with_diacritics.push(v.substring(0,1)+diacritic_symbols+v.substring(1));
             vowels_without_diacritics.push(v);
         }
     }
