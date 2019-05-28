@@ -108,8 +108,8 @@
     syllable_coda = group(syllable_coda);
     var syllable = (consonants)+"?"+(vowels_with_diacritics);
 
-    var prefix = "(?<=^|[^a-z0-9\u0300-\u036F])";
-    var suffix = "(?=[^a-z0-9\u0300\u0301\u0302\u0304\u030B\u030C\u030D]|\\b|$)";
+    var prefix = "(?<=^|[^a-z0-9\u0300-\u036F-])";
+    var suffix = "(?=[^a-z0-9\u0300\u0301\u0302\u0304\u030B\u030C\u030D-]|$)";
 
     var timeout;
     var tldr = function(){
@@ -125,10 +125,10 @@
         }, function(items) {
             switch(items.syllable){
                 case "1plus":
-                    __tldr(`${prefix}${syllable}(?:${extras}+${syllable})*${suffix}`);
+                    __tldr(`${prefix}${extras}?${syllable}(?:${extras}+${syllable})*${extras}?${suffix}`);
                     break;
                 case "2plus":
-                    __tldr(`${prefix}(?:${syllable}${extras}+)+(?:${syllable})${suffix}`);
+                    __tldr(`${prefix}${extras}?(?:${syllable}${extras}+)+${syllable}${extras}?${suffix}`);
                     break;
             }
         });
