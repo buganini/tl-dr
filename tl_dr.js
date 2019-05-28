@@ -159,18 +159,32 @@
             if(["SCRIPT","STYLE","TEXTAREA","NOSCRIPT"].indexOf(t.parentNode.nodeName)!=-1){
                 continue;
             }
-            var contenteditable = false;
+            var skip = false;
             var p = t.parentNode;
             while(p){
                 if(p.getAttribute){
-                    contenteditable = contenteditable || p.getAttribute("contenteditable")=="true";
+                    skip = skip || p.getAttribute("contenteditable")=="true";
+                    if(skip){
+                        break;
+                    }
                 }
                 p = p.parentNode;
             }
-            if(contenteditable){
+            if(skip){
                 continue;
             }
-            if(t.parentNode.className==class_name){
+
+            var p = t.parentNode;
+            while(p){
+                if(p.getAttribute){
+                    skip = skip || p.className==class_name;
+                }
+                if(skip){
+                    break;
+                }
+                p = p.parentNode;
+            }
+            if(skip){
                 continue;
             }
             texts.push(t);
