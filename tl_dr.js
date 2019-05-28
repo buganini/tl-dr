@@ -131,6 +131,8 @@
     var prefix = "(?:^|[^a-z0-9\u0300-\u036F-])";
     var suffix = "(?=[^a-z0-9\u0300\u0301\u0302\u0304\u030B\u030C\u030D-]|$)";
 
+    var pattern;
+
     var timeout;
     var tldr = function(){
         if(timeout){
@@ -140,25 +142,6 @@
     };
 
     var _tldr = function(){
-        chrome.storage.local.get({
-            syllable: '2plus',
-        }, function(items) {
-            switch(items.syllable){
-                case "1plus":
-                    __tldr(`${prefix}${extras}*(${syllable}(?:${extras}+${syllable})*)${extras}*${suffix}`);
-                    break;
-                case "2plus":
-                    __tldr(`${prefix}${extras}*((?:${syllable}${extras}+)+${syllable})${extras}*${suffix}`);
-                    break;
-            }
-        });
-    };
-
-    var __tldr = function(regex){
-        // console.log(regex.replace(/[\u007F-\uFFFF]/g, function(chr) {
-        //     return "\\u" + ("0000" + chr.charCodeAt(0).toString(16)).substr(-4)
-        // }));
-        // console.log(regex.length);
         var iter = document.evaluate("//body//text()[string-length(normalize-space(.))>2]", document, null, XPathResult.ANY_TYPE, null);
         var texts = [];
         var t;
@@ -183,11 +166,10 @@
             texts.push(t);
         }
         iter = null;
-        var re = new RegExp(regex, "i");
         for(var text in texts){
             text = texts[text];
             var t = text.textContent.normalize('NFD');
-            var match = t.match(re);
+            var match = t.match(pattern);
             var tokens = [];
             while(match){
                 var m = match[1];
@@ -196,7 +178,7 @@
                 tokens.push(m);
                 t = t.substring(i+m.length);
 
-                match = t.match(re);
+                match = t.match(pattern);
             }
             tokens.push(t);
             if(tokens.length > 0){
@@ -219,13 +201,31 @@
             }
         }
     };
-    MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
-    var observer = new MutationObserver(function(mutations, observer) {
+    chrome.storage.local.get({
+        syllable: '2plus',
+    }, function(items) {
+        var regex;
+        switch(items.syllable){
+            case "1plus":
+                regex = `${prefix}${extras}*(${syllable}(?:${extras}+${syllable})*)${extras}*${suffix}`;
+                break;
+            case "2plus":
+                regex = `${prefix}${extras}*((?:${syllable}${extras}+)+${syllable})${extras}*${suffix}`;
+                break;
+        }
+        // console.log(regex.replace(/[\u007F-\uFFFF]/g, function(chr) {
+        //     return "\\u" + ("0000" + chr.charCodeAt(0).toString(16)).substr(-4)
+        // }));
+        // console.log(regex.length);
+        pattern = new RegExp(regex, "i");
+        MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
+        var observer = new MutationObserver(function(mutations, observer) {
+            tldr();
+        });
+        observer.observe(document, {
+            subtree: true,
+            childList: true
+        });
         tldr();
     });
-    observer.observe(document, {
-        subtree: true,
-        childList: true
-    });
-    tldr();
 })();
