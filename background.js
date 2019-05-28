@@ -17,18 +17,6 @@ function requestProcessor(details) {
     return {responseHeaders: headers};
 };
 
-function messageHandler(request, sender, sendResponse) {
-    if (request.action === "GET_CONFIG") {
-        chrome.storage.sync.get(defaultConfig, function(items) {
-            sendResponse(items);
-        });
-        return true;
-    } else {
-        console.error("Invalid request: ", request);
-    }
-}
-
-chrome.runtime.onMessage.addListener(messageHandler);
 chrome.webNavigation.onHistoryStateUpdated.addListener(function(details) {
     chrome.tabs.executeScript(null,{file:"tl_dr.js"});
 });

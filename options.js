@@ -1,6 +1,6 @@
 function save_options() {
     var syllable = document.getElementById('syllable').value;
-    chrome.storage.sync.set({
+    chrome.storage.local.set({
         syllable: syllable,
     }, function() {
         var status = document.getElementById('status');
@@ -12,8 +12,8 @@ function save_options() {
 }
 
 function restore_options() {
-    chrome.runtime.sendMessage({
-        action: "GET_CONFIG"
+    chrome.storage.local.get({
+        syllable: '2plus',
     }, function(items) {
         document.getElementById('syllable').value = items.syllable;
     });
