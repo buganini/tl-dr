@@ -3,6 +3,7 @@ var defaultConfig = {
 };
 
 function requestProcessor(details) {
+    var url = "https://xn--lhrz38b.xn--v0qr21b.xn--kpry57d";
     var headers = details.responseHeaders;
     for (var j = 0, jLen = headers.length; j !== jLen; ++j) {
         var header = headers[j];
@@ -12,7 +13,8 @@ function requestProcessor(details) {
             name !== "x-webkit-csp") {
             continue;
         }
-        header.value = header.value.replace(/media-src +(?:["']none["'])?/, "media-src https://xn--lhrz38b.xn--v0qr21b.xn--kpry57d ");
+        header.value = header.value.replace(/default-src +(?:["']none["'])?/, "default-src "+url+" ");
+        header.value = header.value.replace(/media-src +(?:["']none["'])?/, "media-src "+url+" ");
     }
     return {responseHeaders: headers};
 };
