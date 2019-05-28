@@ -128,7 +128,7 @@
     syllable_coda = group(syllable_coda);
     var syllable = (consonants)+"?"+(vowels_with_diacritics);
 
-    var prefix = "(?<=^|[^a-z0-9\u0300-\u036F-])";
+    var prefix = "(?:^|[^a-z0-9\u0300-\u036F-])";
     var suffix = "(?=[^a-z0-9\u0300\u0301\u0302\u0304\u030B\u030C\u030D-]|$)";
 
     var timeout;
@@ -145,10 +145,10 @@
         }, function(items) {
             switch(items.syllable){
                 case "1plus":
-                    __tldr(`${prefix}${extras}?${syllable}(?:${extras}+${syllable})*${extras}?${suffix}`);
+                    __tldr(`${prefix}${extras}*(${syllable}(?:${extras}+${syllable})*)${extras}*${suffix}`);
                     break;
                 case "2plus":
-                    __tldr(`${prefix}${extras}?(?:${syllable}${extras}+)+${syllable}${extras}?${suffix}`);
+                    __tldr(`${prefix}${extras}*((?:${syllable}${extras}+)+${syllable})${extras}*${suffix}`);
                     break;
             }
         });
@@ -158,7 +158,7 @@
         // console.log(regex.replace(/[\u007F-\uFFFF]/g, function(chr) {
         //     return "\\u" + ("0000" + chr.charCodeAt(0).toString(16)).substr(-4)
         // }));
-        console.log(regex.length);
+        // console.log(regex.length);
         var iter = document.evaluate("//body//text()[string-length(normalize-space(.))>2]", document, null, XPathResult.ANY_TYPE, null);
         var texts = [];
         var t;
@@ -172,21 +172,23 @@
             texts.push(t);
         }
         iter = null;
-        var re = new RegExp(regex, "gi");
+        var re = new RegExp(regex, "i");
         for(var text in texts){
             text = texts[text];
             var t = text.textContent.normalize('NFD');
-            var matches = t.match(re);
-            if(matches){
-                var tokens = [];
-                for(var m in matches){
-                    m = matches[m];
-                    var i = t.indexOf(m);
-                    tokens.push(t.substring(0,i));
-                    tokens.push(m);
-                    t = t.substring(i+m.length);
-                }
-                tokens.push(t);
+            var match = t.match(re);
+            var tokens = [];
+            while(match){
+                var m = match[1];
+                var i = t.indexOf(m);
+                tokens.push(t.substring(0,i));
+                tokens.push(m);
+                t = t.substring(i+m.length);
+
+                match = t.match(re);
+            }
+            tokens.push(t);
+            if(tokens.length > 0){
                 for(var i in tokens){
                     var tk = tokens[i];
                     var n;
