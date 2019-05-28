@@ -138,7 +138,7 @@
         if(timeout){
             clearTimeout(timeout);
         }
-        timeout = setTimeout(_tldr, 100);
+        timeout = setTimeout(_tldr, 500);
     };
 
     var _tldr = function(){
@@ -226,6 +226,6 @@
             subtree: true,
             childList: true
         });
-        tldr();
+        _tldr();
     });
 })();
