@@ -8,7 +8,7 @@ function requestProcessor(details) {
             name !== "x-webkit-csp") {
             continue;
         }
-        header.value = header.value.replace("media-src ", "media-src https://xn--lhrz38b.xn--v0qr21b.xn--kpry57d ");
+        header.value = header.value.replace(/media-src +(?:["']none["'])?/, "media-src https://xn--lhrz38b.xn--v0qr21b.xn--kpry57d ");
     }
     return {responseHeaders: headers};
 };
