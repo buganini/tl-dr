@@ -62,51 +62,29 @@
     var vocalic_consonants = ["m","ng"];
     var syllable_coda = ["","i","u","m","n","nn","ng","p","t","k","h"];
     var extra_vowels = ["ee","eng","eeh","ek","ionn","ionnh","er","ere^","eru^","erh","ereh","ir","irinn","irh","irm","irn","irng","irp","irt","irk"];
-    var diacritic_symbols = ["\u0300","\u0301","\u0302","\u0304","\u030B","\u030C","\u030D"];
-    var diacritic_digits = ["","1","2","3","4","5","6","7","8","9"];
-    var extras = [",","\\.","\\?","!",":","\\s","-"];
+    var diacritic_symbols = "[\u0300\u0301\u0302\u0304\u030B\u030C\u030D]";
+    var diacritic_digits = "[1-9]";
+    var extras = "[,.?!: s-]";
 
-    var vowels_with_diacritic_symbols = [];
-    for(var s in diacritic_symbols){
-        s = diacritic_symbols[s];
-        var vs = [];
-        for(var v in vowels){
-            v = vowels[v];
-            vs.push(v.substring(0,1)+s+v.substring(1));
-            for(var vv in prenuclear_glides){
-                vv = prenuclear_glides[vv];
-                if(v[0]==vv[0]){
-                    continue;
-                }
-                vs.push(vv+v.substring(0,1)+s+v.substring(1));
-                vs.push(vv.substring(0,1)+s+vv.substring(1)+v);
+    var vowels_with_diacritics = [];
+    var vowels_without_diacritics = [];
+    var vs = [];
+    for(var v in vowels){
+        v = vowels[v];
+        vs.push(v.substring(0,1)+"^"+v.substring(1));
+        for(var vv in prenuclear_glides){
+            vv = prenuclear_glides[vv];
+            if(v[0]==vv[0]){
+                continue;
             }
-        }
-        for(var v in vocalic_consonants){
-            v = vocalic_consonants[v];
-            vs.push(v.substring(0,1)+s+v.substring(1));
-        }
-        for(var v in vs){
-            v = vs[v];
-            for(var c in syllable_coda){
-                c = syllable_coda[c];
-                if(c.length>0 && c[0]==v[0]){
-                    continue;
-                }
-                vowels_with_diacritic_symbols.push(v+c);
-            }
-        }
-        for(var v in extra_vowels){
-            v = extra_vowels[v];
-            if(v.indexOf("^")!=-1){
-                vowels_with_diacritic_symbols.push(v.replace("^",s));
-            }else{
-                vowels_with_diacritic_symbols.push(v.substring(0,1)+s+v.substring(1));
-            }
+            vs.push(vv+v.substring(0,1)+"^"+v.substring(1));
+            vs.push(vv.substring(0,1)+"^"+vv.substring(1)+v);
         }
     }
-    var vowels_with_diacritic_digits = [];
-    var vs = vowels.concat(vocalic_consonants);
+    for(var v in vocalic_consonants){
+        v = vocalic_consonants[v];
+        vs.push(v.substring(0,1)+"^"+v.substring(1));
+    }
     for(var v in vs){
         v = vs[v];
         for(var c in syllable_coda){
@@ -114,26 +92,25 @@
             if(c.length>0 && c[0]==v[0]){
                 continue;
             }
-            vowels_with_diacritic_digits.push(v+c);
-            for(var vv in prenuclear_glides){
-                vv = prenuclear_glides[vv];
-                if(v[0]==vv[0]){
-                    continue;
-                }
-                vowels_with_diacritic_digits.push(vv+v+c);
-            }
+            vowels_with_diacritics.push(v.replace("^", diacritic_symbols)+c);
+            vowels_without_diacritics.push((v+c).replace("^", ""));
         }
     }
     for(var v in extra_vowels){
         v = extra_vowels[v];
-        vowels_with_diacritic_digits.push(v.replace("^",""));
+        if(v.indexOf("^")!=-1){
+            vowels_with_diacritics.push(v);
+            vowels_without_diacritics.push(v.replace("^",""));
+        }else{
+            vowels_with_diacritics.push(v.substring(0,1)+"^"+v.substring(1));
+            vowels_without_diacritics.push(v);
+        }
     }
 
-    var vowels_with_diacritics = group([group(vowels_with_diacritic_symbols),group(vowels_with_diacritic_digits)+group(diacritic_digits)]);
+    var vowels_with_diacritics = group([group(vowels_with_diacritics),group(vowels_without_diacritics)+diacritic_digits+"?"]);
     consonants = group(consonants);
     vowels = group(vowels);
     syllable_coda = group(syllable_coda);
-    extras = group(extras);
     var syllable = (consonants)+"?"+(vowels_with_diacritics);
 
     var prefix = "(?<=^|[^a-z0-9\u0300-\u036F])";
