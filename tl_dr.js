@@ -22,7 +22,7 @@
         var text = document.createElement("div");
         text.className = class_name;
         text.textContent = this.textContent;
-        text.style="text-align:center;"
+        text.style="text-align:center; color:#000;"
         currentHelper.appendChild(text);
 
         var audio = document.createElement("audio");
@@ -32,7 +32,7 @@
         currentHelper.appendChild(audio);
 
         var attribution = document.createElement("div");
-        attribution.style="text-align:right; font-size:10pt"
+        attribution.style="text-align:right; font-size:10pt; color:#777;"
         attribution.innerHTML = '語音合成服務由<a href="https://xn--v0qr21b.xn--kpry57d/">意傳科技</a>提供';
         currentHelper.appendChild(attribution);
 
