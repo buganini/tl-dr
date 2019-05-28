@@ -57,10 +57,14 @@
         var tks = [];
         var bytes = [];
         for(var i in arr){
-            if(arr[i].length==1){
-                bytes.push(arr[i]);
+            var tk = arr[i];
+            if(tk.length==1){
+                if("^\\-".indexOf(tk) != -1){
+                    tk = "\\"+tk;
+                }
+                bytes.push(tk);
             }else{
-                tks.push(arr[i]);
+                tks.push(tk);
             }
         }
         bytes = "["+bytes.join("")+"]";
