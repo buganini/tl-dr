@@ -54,7 +54,22 @@
             }
             return 0;
         });
-        return "(?:"+arr.join("|")+")";
+        var tks = [];
+        var bytes = [];
+        for(var i in arr){
+            if(arr[i].length==1){
+                bytes.push(arr[i]);
+            }else{
+                tks.push(arr[i]);
+            }
+        }
+        bytes = "["+bytes.join("")+"]";
+        if(tks.length==0){
+            return bytes;
+        }else{
+            tks.push(bytes);
+            return "(?:"+tks.join("|")+")";
+        }
     };
     var consonants = ["b","c","d","f","g","h","j","k","kh","l","m","n","ng","p","q","r","ph","s","t","th","ts","tsh","v","w","x","y","z","ch","chh"];
     var prenuclear_glides = ["i","o","u"];
