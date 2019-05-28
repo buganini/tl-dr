@@ -133,12 +133,22 @@
 
     var pattern;
 
+    var last_run = 0;
     var timeout;
+    var debounce_threshold = 10000;
     var tldr = function(){
+        var now = new Date().getTime();
+        if(now - last_run > debounce_threshold){
+            if(timeout){
+                clearTimeout(timeout);
+            }
+            last_run = now;
+            _tldr();
+        }
         if(timeout){
             clearTimeout(timeout);
         }
-        timeout = setTimeout(_tldr, 500);
+        timeout = setTimeout(_tldr, debounce_threshold);
     };
 
     var _tldr = function(){
@@ -226,6 +236,6 @@
             subtree: true,
             childList: true
         });
-        _tldr();
+        tldr();
     });
 })();
