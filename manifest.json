@@ -25,9 +25,11 @@
     },
 
     "permissions": [
-        "activeTab",
         "webNavigation",
         "webRequest",
-        "webRequestBlocking"
+        "webRequestBlocking",
+        "http://*/*",
+        "https://*/*",
+        "file:///*/*"
     ]
 }
