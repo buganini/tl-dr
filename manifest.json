@@ -4,6 +4,9 @@
     "description":"Tai-Lo TTS",
     "version": "0.4",
 
+
+    "options_page": "options.html",
+
     "icons": {
         "16": "icon16.png",
         "48": "icon48.png",
@@ -25,6 +28,7 @@
     },
 
     "permissions": [
+        "storage",
         "webNavigation",
         "webRequest",
         "webRequestBlocking",
