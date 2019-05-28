@@ -169,7 +169,9 @@
             var contenteditable = false;
             var p = t.parentNode;
             while(p){
-                contenteditable = contenteditable || p.getAttribute("contenteditable")=="true";
+                if(p.getAttribute){
+                    contenteditable = contenteditable || p.getAttribute("contenteditable")=="true";
+                }
                 p = p.parentNode;
             }
             if(contenteditable){
