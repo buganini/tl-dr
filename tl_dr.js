@@ -82,7 +82,7 @@
     var vocalic_consonants = ["m","ng"];
     var syllable_coda = ["i","u","m","n","nn","ⁿ","ng","p","t","k","h"];
     var extra_vowels = ["ee","eng","eeh","ek","[i\u0131]onn","[i\u0131]onnh","er","ere^","eru^","erh","ereh","[i\u0131]r","[i\u0131]rinn","[i\u0131]rh","[i\u0131]rm","[i\u0131]rn","[i\u0131]rng","[i\u0131]rp","[i\u0131]rt","[i\u0131]rk"];
-    var diacritic_symbols = "[\u0300\u0301\u0302\u0304\u030B\u030C\u030D]";
+    var diacritic_symbols = "[\u0300\u0301\u0302\u0304\u030B\u030C\u030D\u0358]{1,2}";
     var diacritic_digits = "[1-9]";
     var extras = "[,.?!: /\\\\()\"-]";
 
@@ -128,8 +128,8 @@
     syllable_coda = group(syllable_coda);
     var syllable = (consonants)+"?"+(vowels_with_diacritics);
 
-    var prefix = "(?:^|[^a-z0-9\u0300-\u036F\u0131-])";
-    var suffix = "(?=[^a-z0-9\u0300-\u036F\u0131-]|$)";
+    var prefix = "(?:^|[^a-z0-9\u0300-\u036F\u0358\u0131-])";
+    var suffix = "(?=[^a-z0-9\u0300-\u036F\u0358\u0131-]|$)";
 
     var pattern;
 
