@@ -99,6 +99,8 @@ var vowels_with_diacritics = group([group(vowels_with_diacritics)+syllable_coda+
 consonants = group(consonants);
 vowels = group(vowels);
 syllable_coda = group(syllable_coda);
+
+// https://zh.wikipedia.org/wiki/%E9%9F%B3%E8%8A%82
 var syllable = (consonants)+"?"+(vowels_with_diacritics);
 
 var prefix = "(?:^|[^a-z0-9\u0300-\u036F\u0358\u0131-])";
