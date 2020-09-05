@@ -14,3 +14,6 @@ all:
 	browserify extension.js -o tl_dr.bundle.js
 	rm -f tldr.zip
 	zip -r tldr.zip ${FILES}
+
+clean:
+	rm -rf tailo.tmp.js tl_dr.bundle.js tldr.zip
