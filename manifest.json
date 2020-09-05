@@ -20,7 +20,7 @@
             "https://*/*",
             "file:///*/*"
         ],
-        "js": ["tl_dr.js"]
+        "js": ["tl_dr.bundle.js"]
     }],
 
     "background": {
