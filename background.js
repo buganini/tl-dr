@@ -22,6 +22,7 @@ function requestProcessor(details) {
 chrome.webNavigation.onHistoryStateUpdated.addListener(function(details) {
     chrome.tabs.executeScript(null,{file:"tl_dr.js"});
 });
+chrome.browsingData.remove({}, { serviceWorkers: true }, function () {});
 chrome.webRequest.onHeadersReceived.addListener(requestProcessor, {
     urls: ["*://*/*"],
     types: ["main_frame", "sub_frame"]
