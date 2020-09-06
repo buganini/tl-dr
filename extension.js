@@ -137,7 +137,7 @@
         syllable: '2plus',
     }, function(items) {
         var regex;
-        var tl = require('./tailo.tmp.js');
+        var tl = require('./tailo.gen.js');
         var syllable = tl.syllable;
         var prefix = tl.prefix;
         var suffix = tl.suffix;
